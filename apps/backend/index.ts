@@ -8,7 +8,7 @@ const app=express();
 
 app.use(express.json());
 
-const port=8000;
+const port=4000;
 
 app.get('/', async (_req: Request, res: Response) => {
     try {

@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.backend
+      ports:
+        -"4000:4000"
+      enviornment:
+        - DATABASE_URL=postgresql://postgres:secret@localhost:5432/mydb?schema=public
+      depends_on:
+        - postgres
+  frontend:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.frontend
+      args:
+        - DB_URL=postgresql://postgres:secret@localhost:5432/mydb?schema=public
+    ports:
+      - "4002:4002"
+    environment:
+      - DATABASE_URL=postgresql://postgres:secret@localhost:5432/mydb?schema=public
+    depends_on:
+      - postgres
+  
+  ws:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.ws
+    ports:
+      - "4001:4001"
+    environment:
+      - DATABASE_URL=postgresql://postgres:secret@localhost:5432/mydb?schema=public
+    depends_on:
+      - postgres
+  
+  postgres:
+      image: postgres:13
+      enviornment:
+        - POSTGRES_PASSWORD=secret
+      ports:
+        - "5432:5432"
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+
+
