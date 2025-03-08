@@ -21,6 +21,8 @@ jobs:
         with:
           context: .
           file: ./dockerfiles/Dockerfile.frontend
+          build-args:
+            - DB_URL:${{ secrets.DB_URL }}
           push: true
           tags: sandeep002/todo-frontend:${{ github.sha }}  
         
